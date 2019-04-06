@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Legalzoom - Web Developer Test - Z.Negatu</title>
+    <style>
+        @import "https://fonts.googleapis.com/css?family=Lato";
+
+        /*reset default browser settings*/
+
+        * {
+            padding: 0;
+            margin: 0;
+            font-family: Lato, 'sans-serif';
+            box-sizing: border-box;
+        }
+
+        .title {
+            margin-top: 1rem;
+            text-align: center;
+        }
+
+        .menu {
+            background-color: white;
+            padding-top: 1rem;
+            overflow: hidden;
+        }
+
+        .menu__item--square-wrapper {
+            position: relative;
+            overflow: hidden;
+
+            /* keeps the menu items square.
+       100% top-padding  minus (left + right margin)*
+       and 100% width minus ( left + right margin) */
+            padding-top: 96%;
+            width: 96%;
+            margin: 2%;
+            height: 0;
+            cursor: pointer;
+        }
+
+        .menu__item {
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            text-align: center;
+            border: 1px solid #999;
+            text-decoration: none;
+            color: black;
+            cursor: pointer;
+        }
+
+        .menu__item:hover,
+        .menu__item:active {
+            animation-name: color-pulse;
+            animation-duration: 1s;
+            animation-iteration-count: infinite;
+            animation-direction: alternate;
+        }
+
+        .menu__icon {
+            width: 40%;
+            font-size: 8rem;
+            margin: 10% auto;
+            background-color: white;
+        }
+
+        .menu__title {
+            display: block;
+            font-size: 1.25rem;
+            font-weight: bold;
+            margin: 0 1rem auto;
+        }
+
+        .menu__description {
+            display: none;
+        }
+
+        .menu__notification {
+            display: none;
+            position: absolute;
+            top: 5%;
+            right: 5%;
+            width: 2rem;
+            height: 2rem;
+            font-size: 1rem;
+            color: white;
+            text-align: center;
+            padding-top: 0.4rem;
+            background: red;
+            border-radius: 50%;
+            animation-name: bounce;
+            animation-duration: 0.5s;
+            animation-iteration-count: infinite;
+            animation-direction: alternate;
+        }
+
+        .menu__notification img {
+            width: 80%;
+        }
+        /* ---------------------------- carousel-------------------------------------- */
+
+        .carousel {
+            display: none;
+            background-color: #333;
+            width: 100%;
+        }
+
+        .carousel__img {
+            width: 100%;
+            display: none;
+        }
+
+        .carousel__controls {
+            text-align: center;
+        }
+
+        .carousel__prev,
+        .carousel__next {
+            font-size: 2rem;
+            color: white;
+            cursor: pointer;
+            display: inline-block;
+        }
+
+        .carousel__indicators {
+            display: inline-block;
+            margin: 1rem 1.25rem;
+
+        }
+
+        .carousel__indicator {
+            height: 1.75rem;
+            width: 1.75rem;
+            background-color: transparent;
+            border: 1px solid #fff;
+            border-radius: 50%;
+            margin: 0 0.75rem;
+            cursor: pointer;
+            display: inline-block;
+
+        }
+
+        .carousel__indicator--white {
+            background-color: rgba(255, 255, 255, 0.5);
+        }
+
+        @keyframes bounce {
+            0% {
+                top: 5%
+            }
+            100% {
+                top: 3%
+            }
+        }
+
+        @keyframes color-pulse {
+            0% {
+                border: 1px solid #666;
+            }
+            50% {
+                border: 1px solid #00FFFF;
+            }
+            100% {
+                border: 1px solid #666;
+
+            }
+        }
+
+        /* 2 columns  */
+        @media (min-width: 320px) {
+            .menu__item--square-wrapper {
+                float: left;
+                padding-top: 46%;
+                width: 46%;
+                margin: 2%;
+            }
+
+            .menu__icon {
+                width: 40%;
+                margin: 10% auto;
+            }
+
+            .menu__title {
+                display: block;
+                font-size: 1.25rem;
+                font-weight: bold;
+                margin: 0 1rem auto;
+            }
+
+            .menu__description {
+                display: none;
+            }
+            .carousel {
+                display: block;}
+        }
+
+        /* 3 columns */
+        @media (min-width: 720px) {
+            .menu__item--square-wrapper {
+                float: left;
+                padding-top: 29.33%;
+                width: 29.33%;
+                margin: 2%;
+            }
+
+            .menu__icon {
+                width: 35%;
+                margin: 10% auto;
+            }
+
+            .menu__title {
+                display: block;
+                font-size: 1rem;
+                font-weight: bold;
+                margin: 0 1rem auto;
+            }
+
+            .menu__description {
+                display: block;
+                font-size: 0.75rem;
+                color: #333;
+                margin: 0.5rem 1rem auto;
+            }
+        }
+
+        /* 4 columns */
+        @media (min-width: 1024px) {
+            .menu__item--square-wrapper {
+                float: left;
+                padding-top: 21%;
+                width: 21%;
+                margin: 2%;
+            }
+
+            .menu__icon {
+                width: 40%;
+                margin: 10% auto;
+            }
+
+            .menu__title {
+                display: block;
+                font-size: 1rem;
+                font-weight: bold;
+                margin: 0 1rem auto;
+            }
+
+            .menu__description {
+                display: block;
+                font-size: 0.75rem;
+                color: #333;
+                margin: 0.5rem 1rem auto;
+            }
+        }
+
+
+    </style>
+</head>
+<body>
+<main>
+    <h1 class="title">Welcome to your hub</h1>
+    <!-- ---------------------------- menu------------------------------------- -->
+    <section class="menu">
+        <div class="menu__item--square-wrapper">
+            <a href="#" class="menu__item">
+                <span class="menu__notification" id="menu__products"></span>
+                <img class="menu__icon"
+                     src="http://drive.google.com/uc?export=view&id=13C1CAQe0K16wMnJk1DLdAzXPPX7RwSiH">
+                <p class="menu__title">Additional Products</p>
+                <p class="menu__description">View company details and electronic documents</p>
+            </a>
+        </div>
+        <div class="menu__item--square-wrapper">
+            <a href="#" class="menu__item">
+                <span class="menu__notification" id="menu__companies"></span>
+                <img class="menu__icon"
+                     src="http://drive.google.com/uc?export=view&id=1d7ea-IgPw58hPmg8XqQvZSk5k10cFYUO">
+                <p class="menu__title">View Companies</p>
+                <p class="menu__description">View company details and electronic documents</p>
+            </a>
+        </div>
+        <div class="menu__item--square-wrapper">
+            <a href="#" class="menu__item">
+                <span class="menu__notification" id="menu__profile"></span>
+                <img class="menu__icon"
+                     src="http://drive.google.com/uc?export=view&id=1LA0-9PiRs8z-u1bMbutdTxFJq8w383aE">
+                <p class="menu__title">My Profile</p>
+                <p class="menu__description">View company details and electronic documents</p>
+            </a>
+        </div>
+        <div class="menu__item--square-wrapper">
+            <a href="#" class="menu__item">
+                <span class="menu__notification" id="menu__invoices">88</span>
+                <img class="menu__icon"
+                     src="http://drive.google.com/uc?export=view&id=13W7IIXB5wT8MxTBk5Qdx6yzBXpMpKeoJ">
+                <p class="menu__title">View Invoices</p>
+                <p class="menu__description">View company details and electronic documents</p>
+            </a>
+        </div>
+        <div class="menu__item--square-wrapper">
+            <a href="#" class="menu__item">
+                <span class="menu__notification" id="menu__apps"></span>
+                <img class="menu__icon"
+                     src="http://drive.google.com/uc?export=view&id=1GoBKyIrAccpX7mPstu-qIJOeHcgOxBZc">
+                <p class="menu__title">My Apps</p>
+                <p class="menu__description">View company details and electronic documents</p>
+            </a>
+        </div>
+        <div class="menu__item--square-wrapper">
+            <a href="#" class="menu__item">
+                <span class="menu__notification" id="menu__services"></span>
+                <img class="menu__icon"
+                     src="http://drive.google.com/uc?export=view&id=1Yn4F51FNTSwJ-vaS66dRDN8UA1zcEI6a">
+                <p class="menu__title">Secretarial Services</p>
+                <p class="menu__description">View company details and electronic documents</p>
+            </a>
+        </div>
+        <div class="menu__item--square-wrapper">
+            <a href="#" class="menu__item">
+                <span class="menu__notification" id="menu__subscription"></span>
+                <img class="menu__icon"
+                     src="http://drive.google.com/uc?export=view&id=1qSp2a_eZ4ZYrs98S8RV6nkJD8nHnZzhz">
+                <p class="menu__title">Subscriptions</p>
+                <p class="menu__description">Lorem ipsum dolor sit amet, consectetur adipisicing </p>
+            </a>
+        </div>
+        <div class="menu__item--square-wrapper">
+            <a href="#" class="menu__item">
+                <span class="menu__notification" id="menu__mail"></span>
+                <img class="menu__icon"
+                     src="http://drive.google.com/uc?export=view&id=1WJ-7WP78KpLi8l0tRW-F4doV4E0sf0jR">
+                <p class="menu__title">Mail</p>
+                <p class="menu__description">Lorem ipsum dolor sit amet, consectetur adipisicing </p>
+            </a>
+        </div>
+        <div class="menu__item--square-wrapper">
+            <a href="#" class="menu__item">
+                <span class="menu__notification" id="menu__banking"></span>
+                <img class="menu__icon"
+                     src="http://drive.google.com/uc?export=view&id=1LTgU_ezK0UlDV5XmcNch1EDVpY8_qmYg"
+                     alt="Business Banking icon">
+                <p class="menu__title">Business Banking</p>
+                <p class="menu__description">Lorem ipsum dolor sit amet, consectetur adipisicing </p>
+            </a>
+        </div>
+    </section>
+
+    <!-- ---------------------------- carousel-------------------------------------- -->
+    <section class="carousel">
+        <img class="carousel__img" src="http://drive.google.com/uc?export=view&id=1xMEFWWxKzF3jmvDixoToAIsxt46bYOam">
+        <img class="carousel__img" src="http://drive.google.com/uc?export=view&id=1BQEgRpEvdKiQXQt7VA50LjyhWGC94wn9">
+        <img class="carousel__img" src="http://drive.google.com/uc?export=view&id=1PnCfU93mpAZQpAHvY2TBTk-2bXbWtolK">
+        <img class="carousel__img" src="http://drive.google.com/uc?export=view&id=1eZ-1VqlCcp307Lt_MuueDpUzXYi2Kzhd">
+
+        <div class="carousel__controls">
+            <span class="carousel__prev">&#10094;</span>
+            <div class="carousel__indicators">
+                <span class="carousel__indicator" id="carousel__indicator--1"></span>
+                <span class="carousel__indicator" id="carousel__indicator--2"></span>
+                <span class="carousel__indicator" id="carousel__indicator--3"></span>
+                <span class="carousel__indicator" id="carousel__indicator--4"></span>
+            </div>
+            <span class="carousel__next">&#10095;</span>
+        </div>
+    </section>
+</main>
+
+<script>
+    (function () {
+        /* --------------------- notifications--------------------------------- */
+        var notivicatinIcon = "http://drive.google.com/uc?export=view&id=1zfvl50B3uG0Gz9VK4okjxtqee0CaYRbb";
+
+        function notify(elemID, msg) {
+            var elem = document.querySelector('#' + elemID);
+            elem.style.display = 'inline-block';
+            if (isNaN(msg)) {
+                var img = document.createElement('img');
+                img.src = msg;
+                elem.appendChild(img);
+
+            } else {
+                elem.innerHTML = msg;
+            }
+        }
+
+        notify('menu__mail', 4);
+        notify('menu__subscription', notivicatinIcon);
+        notify('menu__banking', notivicatinIcon);
+
+
+        /* --------------------- carousel--------------------------------- */
+
+        /*var prev = document.querySelector('.carousel__prev');
+        var next = document.querySelector('.carousel__next');
+        var indicators = document.querySelectorAll('.carousel__indicator');
+        var slideIndex = 1;
+        showSlide(slideIndex);
+
+        next.addEventListener('click', function () {
+            showSlide(slideIndex += 1);
+        });
+        prev.addEventListener('click', function () {
+            showSlide(slideIndex += -1);
+        });
+
+        for (var i = 0; i < indicators.length; i++) {
+            indicators[i].addEventListener('click', function () {
+                slideIndex += 1;
+                showSlide(slideIndex)
+            })
+        }
+
+        function showSlide(n) {
+            var i;
+            var slides = document.querySelectorAll(".carousel__img");
+            var indicators = document.querySelectorAll(".carousel__indicator");
+            if (n > slides.length) {
+                slideIndex = 1
+            }
+            if (n < 1) {
+                slideIndex = slides.length
+            }
+            for (i = 0; i < slides.length; i++) {
+                slides[i].style.display = "none";
+            }
+            for (i = 0; i < indicators.length; i++) {
+                indicators[i].classList.remove('carousel__indicator--white');
+            }
+            slides[slideIndex - 1].style.display = "block";
+            indicators[slideIndex - 1].classList.add('carousel__indicator--white');
+            console.log('slider index: ', slideIndex)
+        }*/
+        var slideIndex = 1;
+        var prev = document.querySelector('.carousel__prev');
+        var next = document.querySelector('.carousel__next');
+        var indicators = document.querySelectorAll('.carousel__indicator');
+        var carousel = document.querySelector('.carousel');
+
+        prev.addEventListener('click', function () {
+            showSlides(slideIndex += -1);
+        });
+        next.addEventListener('click', function () {
+            showSlides(slideIndex += 1);
+        });
+
+        indicators.forEach(function (indicator, index) {
+            indicator.addEventListener('click', function () {
+                showSlides(slideIndex = index + 1)
+            })
+        });
+
+
+        var play = setInterval(function () {
+            showSlides(slideIndex);
+            slideIndex++
+        }, 3000);
+
+        carousel.addEventListener('click', function () {
+            clearInterval(play);
+        });
+        showSlides(slideIndex);
+
+
+        function showSlides(n) {
+            var i;
+            var slides = document.querySelectorAll(".carousel__img");
+            var indicators = document.querySelectorAll(".carousel__indicator");
+            if (n > slides.length) {
+                slideIndex = 1
+            }
+            if (n < 1) {
+                slideIndex = slides.length
+            }
+            for (i = 0; i < slides.length; i++) {
+                slides[i].style.display = "none";
+            }
+            for (i = 0; i < indicators.length; i++) {
+                indicators[i].classList.remove('carousel__indicator--white');
+            }
+            slides[slideIndex - 1].style.display = "block";
+            indicators[slideIndex - 1].classList.add('carousel__indicator--white');
+        }
+    })();
+</script>
+</body>
+</html>
