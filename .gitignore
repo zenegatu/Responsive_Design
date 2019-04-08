@@ -6,7 +6,7 @@
 e2e_test.*
 node_modules
 tools/gulp-tasks/cldr/cldr-data/
-_private_
+/_private_/
 
 # Include when developing application packages.
 pubspec.lock
@@ -14,9 +14,13 @@ pubspec.lock
 .idea/
 .settings/
 .vscode/launch.json
+.eslintrc.js
 *.swo
 modules/.settings
 modules/.vscode
+package-lock.json
+package.json
+
 
 # Don't check in secret files
 *secret.js
@@ -34,5 +38,5 @@ yarn-error.log
 # User specific bazel settings
 .bazelrc.user
 # Webstoms project
-.idea
+
 

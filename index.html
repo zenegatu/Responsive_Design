@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Legalzoom - Web Developer Test - Z.Negatu</title>
+    <title>responsive design</title>
     <style>
         @import "https://fonts.googleapis.com/css?family=Lato";
 
@@ -103,7 +103,6 @@
         .menu__notification img {
             width: 80%;
         }
-        /* ---------------------------- carousel-------------------------------------- */
 
         .carousel {
             display: none;
@@ -146,6 +145,7 @@
 
         }
 
+        /*indicates the current slide, used by javascript*/
         .carousel__indicator--white {
             background-color: rgba(255, 255, 255, 0.5);
         }
@@ -199,6 +199,7 @@
             .carousel {
                 display: block;}
         }
+
 
         /* 3 columns */
         @media (min-width: 720px) {
@@ -256,6 +257,7 @@
                 color: #333;
                 margin: 0.5rem 1rem auto;
             }
+
         }
 
 
@@ -264,7 +266,6 @@
 <body>
 <main>
     <h1 class="title">Welcome to your hub</h1>
-    <!-- ---------------------------- menu------------------------------------- -->
     <section class="menu">
         <div class="menu__item--square-wrapper">
             <a href="#" class="menu__item">
@@ -350,7 +351,6 @@
         </div>
     </section>
 
-    <!-- ---------------------------- carousel-------------------------------------- -->
     <section class="carousel">
         <img class="carousel__img" src="http://drive.google.com/uc?export=view&id=1xMEFWWxKzF3jmvDixoToAIsxt46bYOam">
         <img class="carousel__img" src="http://drive.google.com/uc?export=view&id=1BQEgRpEvdKiQXQt7VA50LjyhWGC94wn9">
@@ -358,134 +358,95 @@
         <img class="carousel__img" src="http://drive.google.com/uc?export=view&id=1eZ-1VqlCcp307Lt_MuueDpUzXYi2Kzhd">
 
         <div class="carousel__controls">
-            <span class="carousel__prev">&#10094;</span>
+            <span class="carousel__prev" id="prev">&#10094;</span>
             <div class="carousel__indicators">
-                <span class="carousel__indicator" id="carousel__indicator--1"></span>
-                <span class="carousel__indicator" id="carousel__indicator--2"></span>
-                <span class="carousel__indicator" id="carousel__indicator--3"></span>
-                <span class="carousel__indicator" id="carousel__indicator--4"></span>
+                <span class="carousel__indicator" id="1"></span>
+                <span class="carousel__indicator" id="2"></span>
+                <span class="carousel__indicator" id="3"></span>
+                <span class="carousel__indicator" id="4"></span>
             </div>
-            <span class="carousel__next">&#10095;</span>
+            <span class="carousel__next" id="next">&#10095;</span>
         </div>
     </section>
 </main>
 
 <script>
     (function () {
-        /* --------------------- notifications--------------------------------- */
-        var notivicatinIcon = "http://drive.google.com/uc?export=view&id=1zfvl50B3uG0Gz9VK4okjxtqee0CaYRbb";
+      var slideIndex, prev, next, indicators, carousel, notification, play;
 
-        function notify(elemID, msg) {
-            var elem = document.querySelector('#' + elemID);
-            elem.style.display = 'inline-block';
-            if (isNaN(msg)) {
-                var img = document.createElement('img');
-                img.src = msg;
-                elem.appendChild(img);
+notification = 'http://drive.google.com/uc?export=view&id=1zfvl50B3uG0Gz9VK4okjxtqee0CaYRbb';
+function notify (elemID, msg) {
+  var elem, img;
+  elem = document.querySelector('#' + elemID);
+  elem.style.display = 'inline-block';
+  if (isNaN(msg)) {
+    img = document.createElement('img');
+    img.src = msg;
+    elem.appendChild(img);
+  } else {
+    elem.innerHTML = msg;
+  }
+}
 
-            } else {
-                elem.innerHTML = msg;
-            }
-        }
+notify('menu__mail', 4);
+notify('menu__subscription', notification);
+notify('menu__banking', notification);
 
-        notify('menu__mail', 4);
-        notify('menu__subscription', notivicatinIcon);
-        notify('menu__banking', notivicatinIcon);
+/* --------------------- carousel--------------------------------- */
 
+slideIndex = 1;
+prev = document.querySelector('.carousel__prev');
+next = document.querySelector('.carousel__next');
+indicators = document.querySelectorAll('.carousel__indicator');
+carousel = document.querySelector('.carousel');
 
-        /* --------------------- carousel--------------------------------- */
+function showSlides (n) {
+  var i, slides;
+  slides = document.querySelectorAll('.carousel__img');
+  indicators = document.querySelectorAll('.carousel__indicator');
+  if (n > slides.length) {
+    slideIndex = 1;
+  }
+  if (n < 1) {
+    slideIndex = slides.length;
+  }
+  for (i = 0; i < slides.length; i++) {
+    slides[i].style.display = 'none';
+  }
+  for (i = 0; i < indicators.length; i++) {
+    indicators[i].classList.remove('carousel__indicator--white');
+  }
+  slides[slideIndex - 1].style.display = 'block';
+  indicators[slideIndex - 1].classList.add('carousel__indicator--white');
+}
 
-        /*var prev = document.querySelector('.carousel__prev');
-        var next = document.querySelector('.carousel__next');
-        var indicators = document.querySelectorAll('.carousel__indicator');
-        var slideIndex = 1;
-        showSlide(slideIndex);
+play = setInterval(function () {
+  showSlides(slideIndex);
+  slideIndex++;
+}, 3000);
 
-        next.addEventListener('click', function () {
-            showSlide(slideIndex += 1);
-        });
-        prev.addEventListener('click', function () {
-            showSlide(slideIndex += -1);
-        });
+prev.addEventListener('click', function () {
+  slideIndex += -1;
+  showSlides(slideIndex);
+});
+next.addEventListener('click', function () {
+  slideIndex += 1;
+  showSlides(slideIndex);
+});
+carousel.addEventListener('click', function () {
+  clearInterval(play);
+});
 
-        for (var i = 0; i < indicators.length; i++) {
-            indicators[i].addEventListener('click', function () {
-                slideIndex += 1;
-                showSlide(slideIndex)
-            })
-        }
+indicators = document.querySelector('.carousel__indicators');
+indicators.addEventListener('click', function (evt) {
+  slideIndex = Number(evt.target.id);
+  showSlides(slideIndex);
+});
 
-        function showSlide(n) {
-            var i;
-            var slides = document.querySelectorAll(".carousel__img");
-            var indicators = document.querySelectorAll(".carousel__indicator");
-            if (n > slides.length) {
-                slideIndex = 1
-            }
-            if (n < 1) {
-                slideIndex = slides.length
-            }
-            for (i = 0; i < slides.length; i++) {
-                slides[i].style.display = "none";
-            }
-            for (i = 0; i < indicators.length; i++) {
-                indicators[i].classList.remove('carousel__indicator--white');
-            }
-            slides[slideIndex - 1].style.display = "block";
-            indicators[slideIndex - 1].classList.add('carousel__indicator--white');
-            console.log('slider index: ', slideIndex)
-        }*/
-        var slideIndex = 1;
-        var prev = document.querySelector('.carousel__prev');
-        var next = document.querySelector('.carousel__next');
-        var indicators = document.querySelectorAll('.carousel__indicator');
-        var carousel = document.querySelector('.carousel');
+showSlides(slideIndex);
 
-        prev.addEventListener('click', function () {
-            showSlides(slideIndex += -1);
-        });
-        next.addEventListener('click', function () {
-            showSlides(slideIndex += 1);
-        });
-
-        indicators.forEach(function (indicator, index) {
-            indicator.addEventListener('click', function () {
-                showSlides(slideIndex = index + 1)
-            })
-        });
-
-
-        var play = setInterval(function () {
-            showSlides(slideIndex);
-            slideIndex++
-        }, 3000);
-
-        carousel.addEventListener('click', function () {
-            clearInterval(play);
-        });
-        showSlides(slideIndex);
-
-
-        function showSlides(n) {
-            var i;
-            var slides = document.querySelectorAll(".carousel__img");
-            var indicators = document.querySelectorAll(".carousel__indicator");
-            if (n > slides.length) {
-                slideIndex = 1
-            }
-            if (n < 1) {
-                slideIndex = slides.length
-            }
-            for (i = 0; i < slides.length; i++) {
-                slides[i].style.display = "none";
-            }
-            for (i = 0; i < indicators.length; i++) {
-                indicators[i].classList.remove('carousel__indicator--white');
-            }
-            slides[slideIndex - 1].style.display = "block";
-            indicators[slideIndex - 1].classList.add('carousel__indicator--white');
-        }
     })();
 </script>
+
 </body>
 </html>
